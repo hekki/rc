@@ -14,8 +14,8 @@ var hex bool
 const bitSize = 64
 
 func init() {
-	RootCmd.PersistentFlags().BoolVarP(&binary, "binary", "b", false, "binary flag")
-	RootCmd.PersistentFlags().BoolVarP(&hex, "hex", "e", false, "hex flag")
+	RootCmd.PersistentFlags().BoolVarP(&binary, "binary", "b", false, "binary input")
+	RootCmd.PersistentFlags().BoolVarP(&hex, "hex", "e", false, "hex input")
 }
 
 // RootCmd is root command
