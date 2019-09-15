@@ -12,6 +12,8 @@ import (
 var binary bool
 var hex bool
 
+const bitSize = 64
+
 func init() {
 	RootCmd.PersistentFlags().BoolVarP(&binary, "binary", "b", false, "binary flag")
 	RootCmd.PersistentFlags().BoolVarP(&hex, "hex", "e", false, "hex flag")
@@ -32,41 +34,40 @@ var RootCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		var rowNum int
+		var base int
 
 		if binary {
-			bRowNum, err := strconv.ParseInt(args[0], 2, 64)
-			if err != nil {
-				log.Fatalf("%s is not a binary number.", args[0])
-			}
-
-			rowNum = int(bRowNum)
+			base = 2
 		} else if hex {
-			hRowNum, err := strconv.ParseInt(args[0], 16, 64)
-			if err != nil {
-				log.Fatalf("%s is not a hex number.", args[0])
-			}
-
-			rowNum = int(hRowNum)
+			base = 16
 		} else {
-			dRowNum, err := strconv.Atoi(args[0])
-			if err != nil {
-				log.Fatalf("%s is not a decimal number.", args[0])
-			}
-
-			rowNum = dRowNum
+			base = 10
 		}
 
-		formatPrint(rowNum)
+		rowNum = parseStringNum(args[0], base)
+		fmt.Println("Decimal:", toDecimalString(rowNum))
+		fmt.Println("Binary:", toBinaryString(rowNum))
+		fmt.Println("Hex:", toHexString(rowNum))
 	},
 }
 
-func formatPrint(d int) {
-	decimalNum := fmt.Sprintf("Decimal: %d", d)
-	fmt.Println(decimalNum)
+func toDecimalString(num int) string {
+	return fmt.Sprintf("%d", num)
+}
 
-	binaryNum := fmt.Sprintf("Binary: %b", d)
-	fmt.Println(binaryNum)
+func toBinaryString(num int) string {
+	return fmt.Sprintf("%b", num)
+}
 
-	hexNum := fmt.Sprintf("Hex: %x", d)
-	fmt.Println(hexNum)
+func toHexString(num int) string {
+	return fmt.Sprintf("%x", num)
+}
+
+func parseStringNum(stringNum string, base int) int {
+	num, err := strconv.ParseInt(stringNum, base, bitSize)
+	if err != nil {
+		log.Fatalf("%s is illegal string.", stringNum)
+	}
+
+	return int(num)
 }
