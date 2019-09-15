@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"strconv"
@@ -23,15 +22,7 @@ func init() {
 var RootCmd = &cobra.Command{
 	Use:   "rc [num]",
 	Short: "Command Line radix converter",
-	Args: func(cmd *cobra.Command, args []string) error {
-		if len(args) < 1 {
-			return errors.New("requires argument")
-		}
-		if len(args) > 1 {
-			return errors.New("Too many arguments")
-		}
-		return nil
-	},
+	Args:  cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		var rowNum int
 		var base int
