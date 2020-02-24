@@ -25,17 +25,8 @@ var RootCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		var rowNum int
-		var base int
 
-		if binary {
-			base = 2
-		} else if hex {
-			base = 16
-		} else {
-			base = 10
-		}
-
-		rowNum = parseStringNum(args[0], base)
+		rowNum = parseStringNum(args[0], base())
 		fmt.Println("Decimal:", toDecimalString(rowNum))
 		fmt.Println("Binary:", toBinaryString(rowNum))
 		fmt.Println("Hex:", toHexString(rowNum))
@@ -61,4 +52,14 @@ func parseStringNum(stringNum string, base int) int {
 	}
 
 	return int(num)
+}
+
+func base() int {
+	if binary {
+		return 2
+	} else if hex {
+		return 16
+	} else {
+		return 10
+	}
 }
