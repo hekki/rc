@@ -22,7 +22,7 @@ func init() {
 var RootCmd = &cobra.Command{
 	Use:   "rc [num]",
 	Short: "Command Line radix converter",
-	Args:  cobra.MaximumNArgs(1),
+	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		var rowNum int
 		var base int
